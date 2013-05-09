@@ -16,7 +16,7 @@
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -26,10 +26,9 @@
           </button>
           <a class="brand" href="/">{{ site.name }}</a>
           <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+            <ul class="nav pull-right">
+              <li><a href="#">Categorias</a></li>
+              <li><a href="#">Sobre</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -38,25 +37,29 @@
 
     <div class="container"> 
       {{ content }}
+    </div>
 
+    <hr>
+    <div class="container">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="span6">
+            <p>
+              <strong>Leonardo Veríssimo da Silva</strong><br />
+              &eacute; desenvolvedor s&ecirc;nior<br />
+            </p>
+          </div>
+          <div class="span6">
+            <p class="pull-right">
+              <a href="http://github.com/leonardoverissimo/">github.com/leonardoverissimo</a><br />
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
       
     <!-- Javascript -->
-      
-    <footer>
-      <div class="contact">
-        <p>
-          <strong>Leonardo Veríssimo da Silva</strong><br />
-          &eacute; desenvolvedor senior<br />
-        </p>
-      </div>
-      <div class="contact">
-        <p>
-          <a href="http://github.com/yourusername/">github.com/yourusername</a><br />
-          <a href="http://twitter.com/yourusername/">twitter.com/yourusername</a><br />
-        </p>
-      </div>
-    </footer>
+    
 
     </body>
 </html>
