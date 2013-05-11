@@ -1,14 +1,13 @@
 ---
 layout: post
-title:  "Testando Esse Bagulho"
-date:   2013-05-09 23:08:00
+title:  "Cortando com More"
+date:   2013-05-10 22:05:00
 categories: lorem ipsum
 ---
 
-### Isso é um título?
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In est lectus, semper sodales fringilla sit amet, luctus ut nisi. Donec iaculis tempor sapien sit amet rhoncus. Donec viverra, libero ut laoreet feugiat, neque nisi aliquet velit, vitae elementum leo purus in metus. Aliquam id aliquet eros. Suspendisse bibendum gravida congue. Proin pulvinar nulla eu libero tempus sit amet blandit neque rhoncus. Aenean ut pharetra nunc. Curabitur eget mi in erat pellentesque sollicitudin.
-
+<!--more-->
 Vestibulum vitae enim vel ipsum posuere viverra vitae a tortor. Vivamus nec nulla mauris. Quisque iaculis facilisis elit, in lobortis massa tincidunt ac. Donec semper sagittis ligula, sit amet pulvinar dui tempor vel. Duis molestie quam id risus semper adipiscing. Nam quis nunc eu nunc elementum aliquet. Vivamus vel nulla odio. Ut massa velit, rutrum vel malesuada gravida, consectetur at dolor. Duis pellentesque, odio ac sollicitudin tincidunt, nulla nulla elementum est, dignissim faucibus nunc tortor in eros.
 
 Quisque interdum commodo lorem, vitae imperdiet tellus euismod varius. Sed dictum nibh fringilla lacus mollis at ultricies est tempor. Nullam at sapien felis, ac aliquam tortor. Proin magna erat, mattis id tristique quis, viverra ut nunc. Integer ut rutrum est. Integer faucibus fringilla tempus. Proin sagittis sem ut neque consectetur egestas.
