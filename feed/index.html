@@ -1,0 +1,27 @@
+---
+layout: nil
+---
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Objectzilla</title>
+    <link>http://www.objectzilla.com.br</link>
+    <atom:link href="http://www.objectzilla.com.br/feed/" rel="self" type="application/rss+xml" />
+    <description>Objectzilla, por Leonardo Ver&iacute;ssimo da Silva</description>
+    <language>pt-BR</language>
+    <pubDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+    <lastBuildDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
+ 
+    {% for post in site.posts %}
+    <item>
+      <title>{{ post.title }}</title>
+      <link>http://www.objectzilla.com.br{{ post.url }}</link>
+      <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+      <author>Leonardo Ver&iacute;ssimo da Silva</author>
+      <guid>http://www.objectzilla.com.br{{ post.id }}</guid>
+      <description>{{ post.content | xml_escape }}</description>
+    </item>
+    {% endfor %}
+ 
+  </channel>
+</rss>
