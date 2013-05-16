@@ -5,9 +5,13 @@ title: Objectzilla, por Leonardo Ver&iacute;ssimo da Silva
 
 <div id="home" class="offset2 span8">
   <h2>Minhas &Uacute;ltimas Publica&ccedil;&otilde;es</h2>
+  {% assign introducao = false %}
   <div class="posts">
-    <div class="post">
-      {% for post in site.posts %}
+    {% for post in site.posts %}
+      {% capture year %}{{ post.date | date: '%Y' }}{% endcapture %}
+      {% capture difference %}{{ year | minus: 2010 }}{% endcapture %}
+      {% unless difference contains "-" %}
+      <div class="post">
       	<span class="title">{{ post.date | date: "%d/%m/%Y" }} &raquo; <a href="{{ post.url }}">{{ post.title }}</a></span>
         <p>
         	{{ post.content | split:'<!--more-->' | first }}
@@ -15,7 +19,20 @@ title: Objectzilla, por Leonardo Ver&iacute;ssimo da Silva
         		<a href="{{ post.url }}">&nbsp;Leia mais...</a>
         	{% endif %}
         </p>
-      {% endfor %}
-    </div>
+      </div>
+      {% else %}
+        {% unless introducao %}
+        <hr>
+        <ul class="antigos">
+          <h2>E ainda...</h2>
+          {% assign introducao = true %}
+        {% endunless %}
+          
+        <li><span>{{ post.date | date: "%d/%m/%Y" }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+      {% endunless %}
+    {% endfor %}
+    {% if introducao %}
+      </ul>
+    {% endif %}
   </div>
 </div>
