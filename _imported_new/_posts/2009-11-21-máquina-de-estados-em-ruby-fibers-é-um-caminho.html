@@ -1,0 +1,35 @@
+---
+layout: post
+title: Máquina de estados em Ruby? Fibers é um caminho
+tags:
+- Fiber
+- Máquina de estados
+- Ruby
+- Ruby 1.9
+- Sem categoria
+- State
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+---
+Semana passada, me esbarrei num <a href="http://eli.thegreenplace.net/2009/08/29/co-routines-as-an-alternative-to-state-machines/">post</a> onde o autor demonstrava como usar co-rotinas em Python para criar uma máquina de estado. Sugiro fortemente não só a leitura desse post, mas também dos links que este autor apresenta.
+
+Bom, nada contra o <em>Python</em>. Mas por que não fazer um experiemento em <em>Ruby</em>? O mais próximo de co-rotinas nessa linguagem são os <a href="http://www.ruby-doc.org/core-1.9/classes/Fiber.html"><strong>Fibers</strong></a>, que só existem a partir do Ruby versão 1.9 (se você não sabe qual a sua versão, provavelmente é a 1.8.6). E se você tiver um S.O. Unix-like, instalar a linguagem requer que você baixe <a href="ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.1-p243.tar.gz">o tar</a>, descompacte-o com:
+
+<pre lang="BASH">
+tar -xvzf ruby-1.9.1-p243.tar.gz
+</pre>
+
+e depois instale com os comandos :
+
+<pre lang="BASH">
+cd ruby-1.9.1-p243
+./configure --prefix=/usr/local --program-suffix=19 --enable-shared
+make
+sudo make install
+</pre>
+
+Bom, iremos criar em Ruby a aplicação da catraca (criado originalmente por <a href="http://blog.objectmentor.com/"><strong>Uncle Bob</strong></a>), que obedece à seguinte máquina de estados:
+

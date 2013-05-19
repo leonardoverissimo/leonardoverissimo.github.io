@@ -1,0 +1,52 @@
+---
+layout: post
+title: Já não deveríamos programar pra hardware multi-core?
+tags:
+- Sem categoria
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+---
+Já é de conhecimento até das algas marinhas que os computadores de hoje são equipados com processadores de mais de um núcleo, e é uma realidade que se estende aos smartphones e aos últimos consoles de videogames. Dado esse fato inevitável, nós programadores deveríamos programar pensando em dividir a execução em várias threads ou processos... mas não programamos. Tenho algumas fatos que corrobaram essa hipótese:
+<ol>
+	<li><strong>As linguagens funcionais não "pegaram"</strong>. Sim, existem os seus proponentes, mas não acredito que exista mesmo gente desenvolvendo em Haskell ou Erlang e terem se beneficiado de suas propaladas propriedades de rodar código concorrente. Acho possível, porém não em quantidade massiva, haver software sendo desenvolvido em Clojure ou Scala, mas eu penso que a escolha seja por ser "Java com lambda" do que por qualquer outra coisa.</li>
+	<li><strong>Os frameworks e linguagens mais populares são reconhecidos por não haver mecanismos de threads.</strong> Pense em PHP: existe criação de threads? Eu acho que não. Um framework bastante hypado é o Node.js, que também não cria threads e sua execução é em somente um processo.</li>
+	<li><strong>É raro encontrar programadores que escrevam e entendam realmente de threads.</strong> Fato: você conhece algum programador que já usou o novo fork-join do Java? Eu não conheço, e também não sou um deles. <em>Actors</em> é um outro conceito desconhecido por muitos. E pra piorar, sempre me deparo com códigos usando threads puras com erros de sincronização que só funcionam e estão em produção por incrível e absoluta sorte.</li>
+</ol>
+Então o que está acontecendo? Ninguém vai utilizar os cores extras que estão ociosas na "máquina" (detesto este termo)? Vou explicar tentando mostrar um pouco o passado
+<h1>Deixando tudo com a base de dados</h1>
+Banco de dados existe há décadas, mas seu surgimento só foi popularizado com o advento da Internet e o surgimento de ferramentas de código aberto, como o MySQL, que permitiu às massas escrever programas que só eram possíveis se você estivesse trabalhando para um grande cliente. Hoje em dia, salvo raras exceções, um sistema mantém seus registros em disco via base de dados. Paralelamente, espera-se do software de hoje que seja acessado remotamente e simultaneamente por vários usuários; não que o programa desktop sem acesso remoto tenha desaparecido, mas, realmente, não é o que os consumidores esperam. Dentro da aplicação, o modelo que havia prevalecido para acesso a vários usuários é o de usar um thread/processo para cada um deles. Isso cria outros problemas, determinado objeto em memória pode ser usado por vários usuários e, nesse caso, precisa-se de uma barreira (lock) ao seu acesso que impeça potencial corrupção de dados. Muitas plataformas tem uma biblioteca de locks, threads e processos. Mas foi Java quem primeiro introduziu esses conceitos na sintaxe da linguagem. A barreira de acesso concorrente é feita pela palavra reservada <em>synchronized</em>, que obedece ao pattern Monitor<em></em>. É uma maneira simples de sincronização, porém, apesar de haver muitos objetos que potencialmente podem ser usadas por mais de uma thread, é raro encontrar, mesmo numa base de código bastante grande, trechos de códigos sincronizados.
+
+A razão é que não confiamos na linguagem pra coordenar acessos simultâneos. Ninguém gosta de dizer isso, mas o Java de hoje tem inspiração não assumida do PHP. Este, dentro da arquitetura LAMP, propõe duas coisas: uma é que o cliente não é o responsável por executar código na linguagem utilizada no servidor, limitando-se àquilo que aquele é capaz de entender (ou seja, HTML, CSS e Javascript); outra é que o servidor não deve compartilhar nenhum recurso entre requisições (share nothing architecture), delegando as sessões a recursos externos, como instâncias de cache  e/ou de banco de dados. Java, por mais que tenha negado muita das decisões ruins que existem no PHP, incorporou à sua maneira estes conceitos. A consequência disso: praticamente todo objeto com estado tem uma representação externa no banco de dados que, em última instância, é o garantidor da consistência da informação. A informação em memória torna-se apenas uma cópia para uso naqueles microssegundos de processamento durante uma requisição. A sincronização na linguagem deixa de existir, pois se dois usuários acessarem o mesmo dado ao mesmo tempo, haverá duas cópias em memória, e outra, a prevenção de corrupção de dados é garantida pela abertura e fechamento de transação, um mecanismo da base. Em miúdos, a responsabilidade pela sincronização está inteiramente "nas costas" da base de dados, não da aplicação em Java, rodando no servidor. Isso não é somente uma "frescura" arquitetural, faz-se este arranjo porque é mais simples, o conceito de transação é mais facilmente compreendido do que o conceito de sincronização de threads. É tão verdade que há muita gente pouco versada em programação concorrente escrevendo programas concorrentes, ou seja, o design de menor esforço ganha a preferência.
+
+Extrapolando, se para uma determinada classe de programas confiamos no banco de dados pra fazer sincronismo, é bem possível que o público espere uma infraestrutura de persistência que, além do que já faz hoje, faça o serviço de execução em múltiplos <em>cores</em>. Apesar de que, hoje em dia, nenhuma solução assim existe, os bancos relacionais tradicionais nasceram em uma outra era de processadores, e os bancos NoSQL, em sua maioria, não rodam em multithread, a não ser que você rode várias instâncias.
+
+Isso não quer dizer que vai ser sempre assim. É possível que, para um subconjunto dos NoSQLs, a execução multithread seja futuramente implementado. Refiro-me àqueles que  possuem suporte ao framework map-reduce, como Mongo e CouchDB, de cuja natureza funcional <em>seria</em> possível distribuir a execução em paralelo. Outros bancos não-relacionais, como Redis, precisariam ainda da evolução de algum framework de computação de dados. As grandes <em>database vendors</em> estão bem atentas e lançando ao mercado soluções de datagrid, uma espécie de <em>super-cache</em> que, além de espalhar transparentemente os dados cacheados entre vários nós, possibilita que scripts de execução sejam levados aonde estiverem os dados, para execução em paralelo. Quem produz bancos relacionais não arriscará mexer tanto assim no seu produto, correndo o risco de minguar o seu lucro. Por isso, vejo os <em>datagrids</em> como a solução "mais comercial" a ser oferecida.
+
+Continuando a evolução, quando alguma solução tiver sido estabelecida, será a vez dos clones embeddable surgirem. Será um movimento semelhante dos bancos relacionais, que tem também sua versões embeddable como SQLite ou HSQLDB. Mas no caso das bases de dados de execução paralela, seu uso possibilitará o uso de vários cores para além do gênero server-side, como aplicações móveis e de desktop, sem incorrer no uso de threads.
+<h1>Serviços na nuvem</h1>
+O que é mais rápido, uma aplicação que depende, no máximo, de bibliotecas locais, ou uma aplicação que se utiliza de serviços em rede? A crença predominante é de que a primeira opção seria sempre mais rápida, porém acredito que a tendência futura é a segunda opção ser mais vantajosa. Elenco três razões:
+
+1) Os processadores atuais não podem ficar mais rápidos, para ter mais processamento à disposição será necessário ter mais espaço para CPUs. Os consumidores, com seus tablets e smartphones, não vão querer mais poder de processamento se isso implicar num dispositivo maior. Ao contrário dos donos de data centers, que podem ter tanto espaço quanto a demanda exigir. Como consequência, a razão server-side/cliente-side em capacidade de processamento será muito maior.
+
+2) A disponibilidade da largura de banda varia (de forma gritante) de país para país, mas é inegável que ela aumenta cada vez mais. Numa conexão extremamente alta, a velocidade de transmissão em rede pode ser maior que a velocidade de escrita em disco do próprio computador cliente.
+
+3) O debacle do padrão WS-* pode ser uma boa coisa. A serialização dos dados transmitidos será um componente crítico no tempo de resposta, quando as variáveis banda da rede e processamento remoto deixam de existir. Serializar XML, validar sobre um XSD e depender sempre do POST do HTTP 1.1 sempre foram as formas de deixar a aplicação lenta. Ainda bem que as novas soluções são baseadas em necessidades práticas, não em acordo de comitê.
+
+Só pra deixar claro, não me refiro às soluções PaaS ou IaaS de hoje em dia. Penso exatamente numa solução SOA, que entrou em desuso porque não é mais moda.
+
+Existe uma certa crença, equivocada, de que uma execução local seria mais rápido do que delegar à execução remota. O pressuposto assume que as duas máquinas, cliente e servidor, são iguais em capacidade de processamento, e que a rede é lenta. Pelo contrário, do lado servidor, é possível haver muito mais capacidade de processamento do que o lado cliente, onde impera a necessidade de baixo custo e tamanho restrito para não comprometer o deslocamento de equipamento. E outra, rede lenta, infelizmente, é problema de Brasil, não é uma realidade em países como a Coreia do Sul, por exemplo. Ainda assim, comunicação em rede "intra-nuvem" alcança altíssimas velocidades, uma vez que não existe a rede pública no meio do caminho.
+
+Pressupondo haver uma nuvem de processamento veloz e comunicação quase instantânea, é possível que surjam empresas que ofereçam serviços específicos que requeiram intenso processamento e uso de execução paralela, bastando ao cliente enviar dados e consultar o retorno em sequência. Com isso, no cômputo geral, a execução se dividiria em vários cores, apesar do consumidor do serviço nunca precisar abrir uma thread. Repare que é um tipo de serviço diferente de PaaS ou IaaS, que oferecem, respectivamente, uma plataforma ou uma infraestrutura para execução. Seria um nível mais alto, mais específico a um nicho de atividade, e pontual, pois não estaria na base da arquitetura da aplicação.
+
+Fato: os serviços mais próximos que descreve o que foi falado acima seria ou Google Maps ou redes sociais. O uso de serviços na nuvem é raro, pois depende de um conhecimento de negócio
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;

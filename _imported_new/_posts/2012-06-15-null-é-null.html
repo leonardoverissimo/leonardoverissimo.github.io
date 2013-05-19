@@ -1,0 +1,78 @@
+---
+layout: post
+title: Null é null
+tags:
+- Sem categoria
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+---
+Sinto comichão ao ver código fazendo tratamento de código nulo. Minha impressão é que não se pensou numa alternativa melhor ou não se confia no código dos outros, ou os dois.
+
+Certamente, o valor nulo não respeita uma das propriedades SOLID de orientação a objetos, o princípio de Liskov, que diz mais ou menos que uma referência tipada pode apontar para um subtipo e, ainda sim, garantir a execução correta do programa. Em outras palavras, um subtipo, para respeitar o princípio, não deve mudar o contrato do tipo pai. Exemplo: uma referência de nome fruta do tipo Fruta aceita um objeto Pera ou objeto Goiaba, pois ambos respeitam o mesmo contrato de Fruta. Eu poderia criar uma classe Peixe estender o contrato de Fruta (afinal, OO é abstração, e nada impediria de você fazer isso), mas convenhamos, será possível utilizar Peixe em todos os momentos em que determinado código espera Fruta? Por exemplo, se existisse um método que põe fruta, leite e Neston no liquidificador pra fazer vitamina, seria possível que Peixe fosse uma implementação apropriada pra fruta? Eu acho que não. Portanto, forçar abstrações não-naturais só vai deixar a vida do programador mais difícil. Seguindo o princípio de Liskov, é suficiente apenas conhecer o tipo da referência, sem saber qual objeto ela realmente está segurando.
+
+O valor nulo viola o princípio de Liskov. Não importa qual contrato  existe para o tipo da referência, se o valor é nulo, qualquer chamada de método resulta no lançamento de NullPointerException. E como não é um comportamento esperado pelo tipo da referência, o nulo não é um bom substituto para um valor que tem o mesmo tipo da referência. Linguagens permitem referências nulas porque aquelas não são puramente orientadas a objetos e porque precisam considerar questões práticas.
+
+Todos sabemos a maneira de evitar tomar exceção na cara, o operador "<em>if</em>" (que, em excesso, pode indicar ausência de SOLID). Mas não deveríamos ter uma postura tão defensiva assim. Talvez eu fale algo muito óbvio, mas é incrível como pega muita gente de surpresa, é o seguinte: se você e sua equipe combinarem de não criar variáveis com valores nulos, você nunca precisará verificar com <em>if</em>. Sim, meu caro! A única razão de você precisar verificar por referência nula é porque alguém (ou você mesmo) pôs um valor nulo em outro ponto do código, ou então não inicializou apropriadamente os parâmetros de determinado objeto. Nulo não surge do espaço sideral pra atacar os programadores indefesos, a culpa de tomar NullPointerException é inteiramente sua!
+
+Mas como é possível criar código sem null? Existem algumas maneiras, umas fáceis e outras difíceis, e eu vou dar alguns exemplos.
+<h1>Fácil: strings, arrays e collections</h1>
+Aplica-se a qualquer estrutura de dados que, teoricamente, possui um conjunto infinito de elementos, de 0 a até toda a capacidade em memória, os mais comuns são Strings e as APIs de Collections. Você pode evitar nulo tomando o seguinte raciocínio: sempre que não encontrar uma String desejada ou não encontrar os elementos que você queria, retorne uma string vazia ou uma collection vazia. O benefício é óbvio, imagine o seguinte código:
+<pre lang="java5">public String flagQuantidade() {
+    if (this.value.contains("alguns") || this.value.contains("algum"))  {
+        return "OK";
+    }
+    return null;
+}
+
+public List<Object> getElementos() {
+    if (this.value.contains("alguns") || this.value.contains("algum"))  {
+        return this.elementos;
+    }
+    return null;
+}
+</pre>
+
+Agora imagine o seguinte código cliente:
+<pre lang="java5">
+System.out.println("Quantidade indefinida? " + master.flagQuantidade().toLowerCase());
+for (Object obj : master.elementos()) {
+    System.out.println(obj.toString().toLowercase());
+}
+</pre>
+Quem for chamar esses métodos como no exemplo acima terá uma certa dor de cabeça pela frente, pois qualquer encademanto de métodos tem potencial de causar exceção. O instinto é verificar por nulo em todas as situações:
+
+<pre lang="java5">
+System.out.println("Quantidade indefinida? " + (master.flagQuantidade() == null ? "" : master.flagQuantidade()).toLowerCase());
+for (Object obj : master.elementos()) {
+    System.out.println((obj == null ? "" : obj.toString().toLowercase()));
+}
+</pre>
+
+O operador ternário torna o código mais ilegível, usar condições if, por outro lado, tornaria-o mais verboso. E pense também que não é somente em um lugar, todos os clientes precisariam repetir esse ritual de verificar por null. Porém, ao evitar que os próprios métodos retornem null, como no exemplo abaixo, aquele código sem verificação de antes passa a funcionar sem maiores sobressaltos.
+
+<pre lang="java5">public String flagQuantidade() {
+    if (this.value.contains("alguns") || this.value.contains("algum"))  {
+        return "OK";
+    }
+    return "";
+}
+
+public List<Object> getElementos() {
+    if (this.value.contains("alguns") || this.value.contains("algum"))  {
+        return this.elementos;
+    }
+    return Collections.emptyList();
+}
+</pre>
+
+O risco é se o contrato do método assume que que null tem semântica diferente de String ou Collection vazia, porém, isso é máquina de estado mal implementada, podendo ser resolvido no item "objetos com estados". Não havendo nenhum estado implícito na classe em que se está trabalhando, essa solução é suficientemente razoável.
+
+Nem tudo é uma maravilha, porém. A biblioteca Bean Validation ignora validações de string ou arrays quando estão nulas, mas não quando estão vazias. Pode ser necessário colocar uma regra de validação mais complexa, infelizmente.
+
+<h1>Fácil: datas passadas e futuras</h1>
+<h1>Médio: objetos com estado</h1>
+<h1>Médio: Tem ou não tem</h1>
+<h1>Difícl: null é valido na aplicação legada</h1>

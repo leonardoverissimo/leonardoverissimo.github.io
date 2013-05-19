@@ -1,0 +1,22 @@
+---
+layout: post
+title: Por que gosto de Ruby? Classes são alteradas dinâmicamente
+tags:
+- Sem categoria
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+---
+Para um javeiro, é difícil admitir que alterar uma classe "a quente" seja <strong>realmente</strong> uma vantagem. Acostumado com a rigidez e a sensação de segurança da linguagem Java, qual seria a vantagem de, depois de criar uma classe, mudar para algo diferente?
+
+É, só-que se quem alterasse a classe não fosse você?, mas uma biblioteca que está fazendo isso no seu lugar? Isso é o que as gems de persistência como <a href="http://api.rubyonrails.org/classes/ActiveRecord/Base.html">ActiveRecord</a>, <a href="http://datamapper.org/doku.php">DataMapper</a>, <a href="http://github.com/mattetti/couchrest/tree/master">CouchRest</a>. No caso do famoso ActiveRecord, uma classe do modelo poderia ficar assim:
+
+<pre lang="RUBY">
+class Album < ActiveRecord::Base
+  has_many :tracks
+
+  
+end
+</pre>

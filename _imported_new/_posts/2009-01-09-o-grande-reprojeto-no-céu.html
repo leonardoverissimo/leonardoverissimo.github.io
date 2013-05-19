@@ -1,0 +1,89 @@
+---
+layout: post
+title: O grande reprojeto no céu
+tags:
+- Sem categoria
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+---
+<em>Dessa vez pego o mote número um da televisão - a de que nada se cria, tudo se copia - para mostrar-lhes a versão traduzida de um artigo recente de Robert C. Martin, também conhecido como Uncle Bob. O original está no <a href="http://blog.objectmentor.com/articles/2009/01/09/the-big-redesign-in-the-sky">link</a>.</em>
+
+<hr />
+A primeira regra dos buracos: <em>se você está em um, pare de cavar.</em>
+
+Muitos desenvolvedores de software citam isso querendo dizer que se você tem uma grande porcaria legada, deve-se parar de trabalhar nela e reescrevê-la do zero.
+
+<em>Isso é provavelmente a <strong>pior</strong> coisa que você poderia fazer...</em>
+
+Todo mundo quer trabalhar num campo verde<a href="#nt1"><sup>*</sup></a>. Num campo verde, você não tem que lidar com a sujeira que se acumulou com o passar dos anos. Num campo verde, você pode estar limpo. Num campo verde, você pode construir o sistema perfeito. Tudo estaria bem se nós pudéssemos apenas começar de novo num campo verde.
+
+Que besteira. Lembre-se, a sujeira original se iniciou num campo verde. <em>Todas as imundícies se iniciaram num campo verde!</em> A única informação irrefutável que tenho sobre campos verdes é que levam frequentemente à horrível imundície.
+
+Por que campos verdes se tornam imundícies? Porque as vacas cagam em tudo quanto é lugar. A grama tem um gosto muito bom porque é novo e fresco. E quem se importa com estrume de vaca por aí? Além disso, desde que andemos na mesma direção, todo o estrume de vaca estará atrás da gente e nem poderemos mais ver.
+
+Tudo bem, levei a metáfora pra muito longe. Mas a realidade dos projetos de campo verde é que estes criam a ilusão de que as suas sujeiras não são importantes.
+
+Suas sujeiras importam <em>sim</em>. Cada pedaço da sua sujeira importa. E se você não limpá-las tão logo seu surgimento, vai acabar com um monte de legado que é uma bagunça horrível em pouco tempo
+
+Mas este blog não é sobre isso. Este blog é sobre o que você deveria fazer quando tem, de fato, uma grande bola de um legado feio. Então o Tio Bob vai dizer o que fazer.
+
+Você não vai gostar.
+
+Quando você tem uma grande bola de legado bagunçado, o que você tem que fazer é...
+
+Você realmente não vai gostar disso.
+
+O que você tem que fazer é... é...
+
+42.
+
+Não, desculpe, história errada. O que você tem que fazer é parar de fazer imundície e começar a limpá-la.
+
+Não significa que você deva chamar seus gerentes para a sala de conferência e dizer-lhes que você não vai entregar "features" nos próximos três meses enquanto você refatora o código. <em>NÃO faça isso!</em> Ao contrário, significa que você vai adaptar a "regra dos escoteiros"<a href="#nt2">**</a> e deixar cada módulo um pouco mais limpo que quando você deu check out.
+
+De iteração a iteração, e de entrega a entrega, você vai limpar o sistema enquanto continua a adicionar novas "features" e funcionalidades nela. <em>Não existe outro jeito.</em>
+
+<h2>Quando um reprojeto é a estratégia correta?</h2>
+Ainda bem que você fez a pergunta. Aqui está a resposta. Nunca.
+
+Veja, você fez a porcaria <sup><a href="#fn1">1</a></sup>, agora limpe-a.
+
+Não estou te dizendo isto para te punir por ter feito a imundície. Estou te dizendo isso porque o esforço do campo verde quase sempre leva ao fracasso. Eis a razão:
+
+Uma vez que os sistemas viram bagunça, as pessoas que fizeram a sujeira começam a demandar um reprojeto
+
+Once systems get messy, the people who made the messes start to demand a redesign. Managers don’t want to redesign because they know how expensive it is. But the developers beat the drums of redesign louder and louder. Meanwhile every feature takes longer and longer to add. Bugs accumulate faster than they can be fixed. Bugs that are fixed reappear over and over again. When managers ask why, the developers blame the mess, and beat the drums ever louder… ever louder.
+
+Eventually, out of sheer frustration, management authorizes the redesign. They pick the Tiger Team! The best of the best… The cream of the cream… These are the developers who are going to save the project.
+
+The rest of us hate them because they get to work on a green field while the rest of us are stuck maintaining the old system. And the feature requests and bug fixes continue to pile in.
+
+What does the Tiger Team use for requirements? There may have been a requirements document at one point, but it was never actually accurate, and it’s hopelessly out of date by now! No, the Tiger Team has but one source for requirements. The old system!
+
+But the old system is changing! Those of us not on the Tiger Team are adding new features and bug fixes every day. And that means that we are in a…
+
+Race!
+
+Remember Xeno’s Paradox? Achilles and a tortoise are in a race. The tortoise has a head start. Every time Achilles gets to where the tortoise was, the tortoise has moved to a new point ahead of Achilles. Therefore Achilles can never catch the tortoise.
+
+Fortunately the law of limits allows us to escape this paradox in a mathematical sense. But in software the paradox sill holds. The Tiger Team can never catch up to the old system. Every time they get to where the old system was, the old system has added new features.
+
+I have seen that race go on for ten years.
+
+When (If!) the new system eventually gets to the place where it can replace the old system, all the members of the Tiger Team will be long gone having moved on to other wonderful green field projects. Schedule pressures will have mounted until the new system is finally completed2 through a Herculean effort. And the developers on the new system will have already started beating the drums for a redesign.
+
+I have seen this happen over and over again. Big Redesigns in the Sky almost always fail horribly. Horribly! HORRIBLY!!
+Moral
+
+It’s simple really. But you aren’t going to like it. If you have a mess, the only way to get rid of the mess is to clean it. Remember that mess is currently paying your paycheck. That system represents your family jewels. You may have dragged those jewels through the mud, and dipped them in pig dung, but that’s no reason to abandon them for some shiny baubles that look pretty for the moment, but can’t possibly pay your paychecks. Go get the family jewels and clean them. It may take a long time. It may be hard. It may be disgusting work. But in the end you’ll have your family jewels shined and beautiful, and you’ll know how to keep them that way.
+
+1 And if you didn’t, you’ve probably made other equivalent messes and left them behind for others to clean up. What goes around comes around.
+
+2 “Completed” is the wrong word. More likely the system was finally readied through a set of horrible compromises with the product people and customers. Whole feature sets are likely missing, broken, or so different that the customer hates them.
+
+<span id="nt1"><sup>*</sup></span>N. do T. "Green fields" (campos verdes) é uma expressão bastante utilizada para expressar projetos de software que não possuem nenhuma restrição externa. Ou seja, será um software novo em ambiente novo.
+
+<span id="nt2"><sup>**</sup></span>N. do T. Deixe o acampamento mais limpo do que quando entrou.

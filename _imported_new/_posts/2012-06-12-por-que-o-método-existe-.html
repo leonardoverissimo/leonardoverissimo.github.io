@@ -1,0 +1,61 @@
+---
+layout: post
+title: Por que o método existe?
+tags:
+- Sem categoria
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+---
+Imagine que na classe Fruta, tivéssemos um método chamado vireSuco() e retornasse um objeto Suco. O código abaixo funcionaria pro objeto Goiaba.
+<!--more-->
+<pre lang="JAVA5">public static void vitamina(Fruta fruta) {
+    Suco suco = fruta.vireSuco();
+    suco.sirvaNoCopo();
+}
+
+public static void main(String args[]) {
+    Goiaba goiaba = new Goiaba();
+    vitamina(goiaba);
+}</pre>
+Esse código abaico também funcionaria pro objeto Maracuja, e olha que nem preciso mudar o método vitamina().
+<pre lang="JAVA5">public static void main(String args[]) {
+    Maracuja maracuja = new Maracuja();
+    vitamina(maracuja);
+}</pre>
+Obviamente, não conseguiríamos fazer vitamina de peixe.
+<pre lang="JAVA5">public static void main(String args[]) {
+    Peixe peixe = new Peixe();
+    vitamina(peixe); // erro de compilação
+}</pre>
+Só foi possível deixar o código desse jeito porque foi feito uma abstração, e se aproveitou da vantagem de não precisar ver a classe do objeto que se está usando. É um detalhe que muitos esquecem e, não raro, é possível alguém fazer uma implementação ingênua assim:
+<pre lang="JAVA5">public static void vitamina(Fruta fruta) {
+
+    Suco suco = null;
+    if (fruta instanceof Goiaba) {
+        Goiaba goiaba = (Goiaba) fruta;
+        goiaba.corteAoMeio();
+        suco = goiaba.bataPolpaDaGoiaba();
+    } else if (fruta instanceof Pera) {
+        Pera pera = (Pera) fruta;
+        pera.piqueEmPedacos();
+        suco = pera.tritureECoe();
+    } else if (fruta instanceof Maracuja) {
+        Maracuja maracuja = (Maracuja) fruta;
+        maracuja.corteAoMeio();
+        maracuja.adicioneAgua();
+        suco = maracuja.bataNoLiquidificador();
+    }
+    if (suco != null) {
+        suco.sirvaNoCopo();
+    }
+}</pre>
+Deixei os nomes dos métodos diferentes pra cada classe de propósito. Geralmente é assim mesmo, os métodos descrevem mais a implementação do que a intenção, e o desenvolvedor não enxerga o polimorfismo pois não percebeu o que há em comum em todas as classes.
+
+Quem manja de orientação a objetos já entende que esse excesso de "if"s pode ser substituído por polimorfismo, porque entende que um tipo de referência pode receber outros objetos através de subclasse ou implementação de interface e que é possível criar código sem precisar conhecer os objetos que estão sendo apontandos.
+
+Mas mesmo assim não entende que valor nulo é uma violação de OO. Ora, a referência Fruta só aceitaria objetos de tipo Fruta, certo? Instancias de Maçã, Goiaba ou Maracuja são todas elegíveis, instâncias de Peixe, Frango e Carne, não. Mas null não é fruta, e é válido para ser aceito numa referência apenas por detalhes da implementação da linguagem. O valor nulo é tão incompatível com a referência que, se tentar chamar qualquer método, uma exceção é lançada. O resultado é uma aberração: não se precisaria verificar nunca o valor real do objeto objeto, pois a linguagem garante, mas por causa da referência nula, é necessário verificar.
+
+Mas existe uma outra alternativa: se você nunca atribuir um valor nulo a qualquer referência, você nunca precisaria verificar se ela aponta pra valor nulo. Releia o que eu acabei de dizer, porque é verdade! Se ninguém atribuir um valor nulo, ele não vai surgir sozinho da toca do coelho numa referência qualquer, simplesmente nenhuma referência ficará nulo e em nenhum lugar precisará de verificação.

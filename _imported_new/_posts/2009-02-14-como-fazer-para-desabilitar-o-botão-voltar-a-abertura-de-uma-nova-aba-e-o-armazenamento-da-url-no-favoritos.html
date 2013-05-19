@@ -1,0 +1,28 @@
+---
+layout: post
+title: Como fazer para desabilitar o botão voltar, a abertura de uma nova aba e o
+  armazenamento da URL no favoritos
+tags:
+- Sem categoria
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+---
+De quando em quando aparece gente perguntando no GUJ como fazer para desabilitar o voltar, como impedir a sessão do usuário aparecer em uma nova aba, como impedir o refresh, o que fazer quando a sessão expira e por aí vai. Em um post só, vou responder a todas as perguntas sobre como controlar o comportamento do browser.
+
+Resposta: você NÃO tem controle sobre o browser, nem NUNCA terá. Na realidade, não se deveria nem fazer esse tipo de pergunta, pois ela esconde o fato de que você tomou uma premissa errada: a de que web é que-nem desktop. (Não é.) Vou mostrar cada uma dessas premissas, mas acredito que não cobre todos os casos.
+<h2>O fluxo de navegação é imprevisível</h2>
+Você já teve o desprazer de trabalhar com fluxograma? Eu já. É um saco, pois é um modelo que representa mal a realidade. Quando alguém escreve um fluxograma, pensa que aquele é o único fluxo possível, o ideal e que não existem outros. Não bastasse, também deve-se garantir que desvios de fluxo não sejam aceitos.
+Problema: a web não tem fluxos, não tem estados. Basicamente, é baseado em requisições pra um servidor que resultam em uma página HTML, cujo conteúdo posssuem caminhos pra outras requisições. É até possível "abstrair" e acreditar que tudo não passa de uma "aplicação desktop" no lado servidor. Mas abstrações não são completas, pois, diferentemente de uma aplicação desktop, na aplicação web é possível recarregar a mesma página, voltar, "desvoltar", abrir uma aba e navegar "em paralelo", guardar um link no favoritos, mandar um link pra alguém... As possibilidades são infinitas, e se você tentar usar um fluxograma para mapear esses casos, vai perder os cabelos. Uma coisa que atrapalha, e é muito comum para programadores Java, é o uso de sessão. (cont...)
+Solução: não modele em pense em fluxos, implica 
+
+O usuário pode simplesmente "esquecer" da página. E aí?
+<li>URLs são recursos, são cacheáveis e fazem parte de um histórico</li>
+Não são, (sobre redirect-after-post)
+<li>Só o form importa</li>
+botões e links não são mapeados para ações
+Não é, só o que importa é o formulário.
+
+
