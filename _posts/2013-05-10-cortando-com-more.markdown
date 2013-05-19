@@ -8,6 +8,105 @@ categories: lorem ipsum
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In est lectus, semper sodales fringilla sit amet, luctus ut nisi. Donec iaculis tempor sapien sit amet rhoncus. Donec viverra, libero ut laoreet feugiat, neque nisi aliquet velit, vitae elementum leo purus in metus. Aliquam id aliquet eros. Suspendisse bibendum gravida congue. Proin pulvinar nulla eu libero tempus sit amet blandit neque rhoncus. Aenean ut pharetra nunc. Curabitur eget mi in erat pellentesque sollicitudin.
 <!--more-->
+{% highlight java %}
+package leonardo.domain;
+
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@SuppressWarnings("serial")
+@Entity
+@Table(name="posts")
+public class Post implements Serializable {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_post")
+	@SequenceGenerator(name = "seq_post", sequenceName = "seq_post", allocationSize = 1, initialValue = 1)
+	private Long id;
+	private String title;
+	private String body;
+	
+	@Column(name="CREATED_AT")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar createdAt;
+	
+	@Column(name="UPDATED_AT")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar updatedAt;
+	
+	@OneToMany(mappedBy="post", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List<Comment> comments;
+	
+	@PrePersist
+	public void antesDeInserir() {
+		createdAt = Calendar.getInstance();
+		updatedAt = createdAt;
+	}
+
+	@PreUpdate
+	public void antesDeEditar() {
+		updatedAt = Calendar.getInstance();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public Calendar getCreatedAt() {
+		return createdAt;
+	}
+
+	public Calendar getUpdatedAt() {
+		return updatedAt;
+	}
+	
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	
+	@Override
+	public String toString() {
+		return "Post [id=" + id + ", title=" + title + ", body=" + body + "]";
+	}
+}
+{% endhighlight %}
+
 Vestibulum vitae enim vel ipsum posuere viverra vitae a tortor. Vivamus nec nulla mauris. Quisque iaculis facilisis elit, in lobortis massa tincidunt ac. Donec semper sagittis ligula, sit amet pulvinar dui tempor vel. Duis molestie quam id risus semper adipiscing. Nam quis nunc eu nunc elementum aliquet. Vivamus vel nulla odio. Ut massa velit, rutrum vel malesuada gravida, consectetur at dolor. Duis pellentesque, odio ac sollicitudin tincidunt, nulla nulla elementum est, dignissim faucibus nunc tortor in eros.
 
 Quisque interdum commodo lorem, vitae imperdiet tellus euismod varius. Sed dictum nibh fringilla lacus mollis at ultricies est tempor. Nullam at sapien felis, ac aliquam tortor. Proin magna erat, mattis id tristique quis, viverra ut nunc. Integer ut rutrum est. Integer faucibus fringilla tempus. Proin sagittis sem ut neque consectetur egestas.
