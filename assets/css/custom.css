@@ -2,6 +2,34 @@ body {
 	padding-top: 70px;
 }
 
+@media(max-width: 939px) {
+	body {
+		padding-top: 0;
+	}
+}
+
+body, .navbar-inner {
+	background-image: url("../img/lightpaperfibers.png");
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) { 
+  
+	/* Retina-specific stuff here */
+	body, .navbar-inner {
+		background-image: url("../img/lightpaperfibers_@2X.png");
+	}
+}
+
+.navbar .minor {
+	font-size: 0.6em;
+}
+
 #home h2 {
 	margin: 30px auto;
 	text-align: center;
