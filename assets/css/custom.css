@@ -1,6 +1,12 @@
 body {
 	padding-top: 70px;
-}	
+}
+
+@media(max-width: 939px) {
+	body {
+		padding-top: 0;
+	}
+}
 
 body, .navbar-inner {
 	background-image: url("../img/lightpaperfibers.png");
@@ -18,6 +24,10 @@ only screen and (                min-resolution: 2dppx) {
 	body, .navbar-inner {
 		background-image: url("../img/lightpaperfibers_@2X.png");
 	}
+}
+
+.navbar .minor {
+	font-size: 0.6em;
 }
 
 #home h2 {
