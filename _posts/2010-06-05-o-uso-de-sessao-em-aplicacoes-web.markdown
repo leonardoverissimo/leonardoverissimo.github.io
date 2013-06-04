@@ -15,7 +15,7 @@ Há uma corrente de pensamento que diz que aplicações web deveriam ser  _state
 Mas programadores Java EE não tão nem aí. O [HttpSession](http://java.sun.com/javaee/6/docs/api/javax/servlet/http/HttpSession.html) é tão acessível e tão simples de usar que o programador não pensa duas vezes antes utilizá-lo. E talvez aí seja a fonte dos problemas: usa-se demais! As pessoas não se dão conta de que é difícil escalar aplicações web que usam muito _Session_; e que também pode ir contra a uma boa experiência de usuário, como o voltar ou o _favoritar_ que deixa de funcionar. Acredito que existam alternativas tão melhores que o _HttpSession_ que este só seria raramente lembrado. Veja as seguintes situações e suas alternativas.
 <!--more-->
 
-## <a id="cache"></a> Preciso fazer cache de entidades 
+##  Preciso fazer cache de entidades <a id="cache">&nbsp;</a>
 
 Veja, o cache é sobre entidades obtidas através de classes da camada de persistência; mas a _HttpSession_ é uma classe de arquitetura que somente a camada de apresentação depende. Entretanto, ao guardar e obter objetos na sessão de usuário, a camada de apresentação está ido além de seu escopo, que é simplesmente mostrar a tela para o usuário; é uma solução ruim.
 
