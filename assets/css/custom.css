@@ -8,7 +8,7 @@ body {
 	}
 }
 
-body, .navbar-inner {
+body {
 	background-image: url("../img/lightpaperfibers.png");
 }
 
@@ -21,8 +21,9 @@ only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) { 
   
 	/* Retina-specific stuff here */
-	body, .navbar-inner {
+	body {
 		background-image: url("../img/lightpaperfibers_@2X.png");
+		background-size: 50%;
 	}
 }
 
