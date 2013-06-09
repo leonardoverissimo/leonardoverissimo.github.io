@@ -1,0 +1,6 @@
+------------
+layout: post
+title: Testando: um novo post sobre Gitbub Pages
+------------
+
+Testando: um novo post sobre Gitbub Pages.
